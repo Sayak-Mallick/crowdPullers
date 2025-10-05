@@ -481,7 +481,7 @@ const Contact = () => {
             </div>
 
             {/* Website */}
-            <div 
+            {/* <div 
               className="website-card bg-blue-600 p-6 rounded-xl text-center hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/40 transition-all duration-300 cursor-pointer"
               onMouseEnter={(e) => {
                 gsap.to(e.currentTarget, {
@@ -510,7 +510,7 @@ const Contact = () => {
               >
                 www.crowdpullersevent.com
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
 
