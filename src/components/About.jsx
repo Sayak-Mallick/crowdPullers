@@ -1,93 +1,13 @@
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { useRevealAnimation, useStaggerAnimation } from '../hooks/useScrollAnimations'
 
 const About = () => {
-  const sectionRef = useRef(null)
-  const titleRef = useRef(null)
-  const contentRef = useRef(null)
-  const cardsRef = useRef(null)
-  const visionRef = useRef(null)
-
-  useEffect(() => {
-    const section = sectionRef.current
-    const title = titleRef.current
-    const content = contentRef.current
-    const cards = cardsRef.current
-    const vision = visionRef.current
-
-    // Title animation
-    gsap.fromTo(title,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none"
-        }
-      }
-    )
-
-    // Content cards animation
-    gsap.fromTo(content.children,
-      { y: 40, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: content,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      }
-    )
-
-    // Feature cards animation
-    gsap.fromTo(cards.children,
-      { x: 30, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: cards,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      }
-    )
-
-    // Vision section animation
-    gsap.fromTo(vision,
-      { y: 40, opacity: 0, scale: 0.95 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: vision,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      }
-    )
-  }, [])
+  const titleRef = useRevealAnimation({ direction: 'up', distance: 50, duration: 1 })
+  const contentRef = useStaggerAnimation({ stagger: 0.15, direction: 'up', distance: 40, duration: 0.8 })
+  const cardsRef = useStaggerAnimation({ stagger: 0.1, direction: 'right', distance: 30, duration: 0.8 })
+  const visionRef = useRevealAnimation({ direction: 'scale', duration: 1 })
 
   return (
-    <section id="about" ref={sectionRef} className="py-24 bg-slate-50">
+    <section id="about" className="py-24 bg-slate-50 animate-reveal">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 ref={titleRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">

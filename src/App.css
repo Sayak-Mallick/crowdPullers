@@ -4,7 +4,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Let Lenis handle smooth scrolling */
 }
 
 body {
@@ -102,5 +102,98 @@ body {
   .backdrop-blur-fallback {
     background-color: rgba(248, 250, 252, 0.8);
     backdrop-filter: blur(10px);
+  }
+}
+
+/* Scroll Animation Classes */
+.animate-reveal {
+  opacity: 0;
+  transform: translateY(100px) scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.parallax-bg {
+  will-change: transform;
+}
+
+.stagger-children {
+  opacity: 1;
+}
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(50px) scale(0.9);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.stagger-children.revealed > * {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.scale-on-scroll {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.scale-on-scroll.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Lenis Smooth Scrolling */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Performance optimizations */
+.parallax-bg,
+.animate-reveal,
+.stagger-children > *,
+.scale-on-scroll {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Smooth transforms */
+* {
+  transform-origin: center;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal,
+  .stagger-children > *,
+  .scale-on-scroll,
+  .parallax-bg {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
   }
 }

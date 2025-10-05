@@ -2,8 +2,264 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { useCounterAnimation, useParallaxAnimation } from '../hooks/useScrollAnimations'
+import './Hero.css'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+
+/**
+ * TEXT-SPLITTING ANIMATION IMPLEMENTATION
+ * =====================================
+ * 
+ * This Hero component demonstrates advanced text-splitting animations using GSAP.
+ * Text-splitting allows us to animate individual characters, words, or lines independently,
+ * creating dynamic and engaging visual effects.
+ * 
+ * FEATURES IMPLEMENTED:
+ * 
+ * 1. Character-by-Character Reveals:
+ *    - "Shaping Dreams" - Flip animation with 3D rotation
+ *    - "into Extraordinary" - Scale animation from center
+ *    - "Experiences" - Wave animation with skew effects
+ * 
+ * 2. Dynamic Word Animation:
+ *    - Scatter exit effect (characters fly in random directions)
+ *    - Rotate entrance effect (characters rotate in)
+ *    - Elastic underline animation
+ * 
+ * 3. Interactive Effects:
+ *    - Hover Effects: Wave, bounce, and rotate variations
+ *    - Click Effects: Emphasis highlighting with scale and glow
+ *    - Responsive animations that adapt to user interaction
+ * 
+ * 4. Animation Types Available:
+ *    - fadeUp: Characters fade in from bottom
+ *    - fadeDown: Characters fade in from top  
+ *    - scale: Characters scale from 0 to 1
+ *    - rotate: Characters rotate while fading in
+ *    - flip: Characters flip in 3D space
+ *    - wave: Characters animate with staggered skew effect
+ *    - scatter: Characters fly to random positions (exit effect)
+ * 
+ * 5. CSS Enhancements:
+ *    - Custom character classes for styling
+ *    - Glow and floating animations
+ *    - Gradient text effects
+ *    - Accessibility considerations (prefers-reduced-motion)
+ * 
+ * IMPLEMENTATION HIGHLIGHTS:
+ * - Custom SplitText class with enhanced animation methods
+ * - Proper cleanup of event listeners and GSAP instances
+ * - Responsive design considerations
+ * - Performance optimizations with will-change CSS properties
+ * - Accessibility support for users who prefer reduced motion
+ * 
+ * This implementation can be easily adapted for:
+ * - Hero sections with impactful headlines
+ * - Interactive buttons and CTAs
+ * - Emphasis and highlighting of key phrases
+ * - Loading animations and transitions
+ * - Marketing landing pages
+ * - Portfolio showcases
+ */
+
+// Enhanced SplitText utility for advanced text splitting animations
+class SplitText {
+  constructor(element, options = {}) {
+    this.element = element
+    this.originalText = element ? element.textContent : ''
+    this.options = {
+      type: 'chars',
+      preserveSpaces: true,
+      addClasses: true,
+      ...options
+    }
+    this.chars = []
+    this.words = []
+    this.lines = []
+    this.split()
+  }
+
+  split() {
+    if (!this.element) return
+
+    const text = this.originalText
+    const types = this.options.type.split(',')
+    
+    // Clear existing content
+    this.element.innerHTML = ''
+    
+    if (types.includes('chars')) {
+      this.splitChars(text)
+    } else if (types.includes('words')) {
+      this.splitWords(text)
+    } else if (types.includes('lines')) {
+      this.splitLines(text)
+    }
+  }
+
+  splitChars(text) {
+    const chars = text.split('')
+    
+    chars.forEach((char, index) => {
+      const span = document.createElement('span')
+      
+      if (char === ' ') {
+        span.innerHTML = '&nbsp;'
+        span.className = 'char char-space'
+      } else {
+        span.textContent = char
+        span.className = 'char'
+      }
+      
+      span.style.display = 'inline-block'
+      span.style.transformOrigin = 'center bottom'
+      span.setAttribute('data-char-index', index)
+      span.setAttribute('data-char-value', char)
+      
+      // Add special classes for different character types
+      if (this.options.addClasses) {
+        if (/[A-Z]/.test(char)) span.classList.add('char-uppercase')
+        if (/[a-z]/.test(char)) span.classList.add('char-lowercase')
+        if (/[0-9]/.test(char)) span.classList.add('char-number')
+        if (/[^A-Za-z0-9\s]/.test(char)) span.classList.add('char-symbol')
+      }
+      
+      this.element.appendChild(span)
+      this.chars.push(span)
+    })
+  }
+
+  splitWords(text) {
+    const words = text.split(' ')
+    words.forEach((word, index) => {
+      const span = document.createElement('span')
+      span.textContent = word
+      span.style.display = 'inline-block'
+      span.style.marginRight = index < words.length - 1 ? '0.25em' : '0'
+      span.className = 'word'
+      span.setAttribute('data-word-index', index)
+      span.setAttribute('data-word-value', word)
+      this.element.appendChild(span)
+      this.words.push(span)
+    })
+  }
+
+  splitLines(text) {
+    const words = text.split(' ')
+    let currentLine = document.createElement('div')
+    currentLine.style.overflow = 'hidden'
+    currentLine.className = 'line'
+    currentLine.setAttribute('data-line-index', 0)
+    
+    words.forEach((word, index) => {
+      const span = document.createElement('span')
+      span.textContent = word + (index < words.length - 1 ? ' ' : '')
+      span.style.display = 'inline-block'
+      currentLine.appendChild(span)
+    })
+    
+    this.element.appendChild(currentLine)
+    this.lines.push(currentLine)
+  }
+
+  // Enhanced animation methods
+  animateIn(options = {}) {
+    const {
+      type = 'fadeUp',
+      duration = 0.8,
+      stagger = 0.05,
+      ease = 'power3.out',
+      delay = 0
+    } = options
+
+    const elements = this.chars.length ? this.chars : this.words.length ? this.words : this.lines
+    
+    switch (type) {
+      case 'fadeUp':
+        return gsap.fromTo(elements, 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration, ease, stagger, delay }
+        )
+      case 'fadeDown':
+        return gsap.fromTo(elements,
+          { y: -50, opacity: 0 },
+          { y: 0, opacity: 1, duration, ease, stagger, delay }
+        )
+      case 'scale':
+        return gsap.fromTo(elements,
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration, ease, stagger, delay }
+        )
+      case 'rotate':
+        return gsap.fromTo(elements,
+          { rotation: 180, opacity: 0 },
+          { rotation: 0, opacity: 1, duration, ease, stagger, delay }
+        )
+      case 'flip':
+        return gsap.fromTo(elements,
+          { rotationX: -90, opacity: 0 },
+          { rotationX: 0, opacity: 1, duration, ease, stagger, delay }
+        )
+      case 'wave':
+        return gsap.fromTo(elements,
+          { y: 30, opacity: 0, skewX: 15 },
+          { y: 0, opacity: 1, skewX: 0, duration, ease, stagger: { amount: stagger * elements.length, from: 'start' }, delay }
+        )
+      default:
+        return gsap.fromTo(elements,
+          { opacity: 0 },
+          { opacity: 1, duration, stagger, delay }
+        )
+    }
+  }
+
+  animateOut(options = {}) {
+    const {
+      type = 'fadeDown',
+      duration = 0.5,
+      stagger = 0.02,
+      ease = 'power2.in'
+    } = options
+
+    const elements = this.chars.length ? this.chars : this.words
+    
+    switch (type) {
+      case 'fadeDown':
+        return gsap.to(elements, 
+          { y: -30, opacity: 0, duration, ease, stagger }
+        )
+      case 'fadeUp':
+        return gsap.to(elements,
+          { y: 50, opacity: 0, duration, ease, stagger }
+        )
+      case 'scatter':
+        return gsap.to(elements,
+          { 
+            x: () => (Math.random() - 0.5) * 200,
+            y: () => (Math.random() - 0.5) * 200,
+            rotation: () => (Math.random() - 0.5) * 360,
+            scale: 0,
+            opacity: 0,
+            duration,
+            ease,
+            stagger
+          }
+        )
+      default:
+        return gsap.to(elements, { opacity: 0, duration, stagger })
+    }
+  }
+
+  revert() {
+    if (this.element && this.originalText) {
+      this.element.textContent = this.originalText
+      this.chars = []
+      this.words = []
+      this.lines = []
+    }
+  }
+}
 
 const Hero = () => {
   const heroRef = useRef(null)
@@ -14,34 +270,98 @@ const Hero = () => {
   const underlineRef = useRef(null)
   const logoRef = useRef(null)
   const statsRef = useRef(null)
+  const shapingDreamsRef = useRef(null)
+  const extraordinaryRef = useRef(null)
+  const experiencesRef = useRef(null)
+  const stat1Ref = useCounterAnimation({ start: 0, end: 500, duration: 2, format: (value) => Math.round(value) + '+' })
+  const stat2Ref = useCounterAnimation({ start: 0, end: 15, duration: 2, format: (value) => Math.round(value) + '+' })
+  const stat3Ref = useCounterAnimation({ start: 0, end: 100, duration: 2, format: (value) => Math.round(value) + '+' })
+  const parallaxBg = useParallaxAnimation({ speed: 0.3 })
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const words = ['Efficient', 'Fast', 'Personalised']
   const wordsLength = words.length
 
   useEffect(() => {
+    // Store current ref values for cleanup
+    const shapingDreamsElement = shapingDreamsRef.current
+    const extraordinaryElement = extraordinaryRef.current
+    const experiencesElement = experiencesRef.current
+
+    // Initialize split text animations for main heading
+    let shapingDreamsSplit, extraordinarySplit, experiencesSplit
+
+    // Create split text instances
+    if (shapingDreamsElement) {
+      shapingDreamsSplit = new SplitText(shapingDreamsElement, { type: 'chars' })
+    }
+    if (extraordinaryElement) {
+      extraordinarySplit = new SplitText(extraordinaryElement, { type: 'chars' })
+    }
+    if (experiencesElement) {
+      experiencesSplit = new SplitText(experiencesElement, { type: 'chars' })
+    }
+
     const tl = gsap.timeline({ delay: 0.2 })
     
-    // Main hero entrance animation
+    // Logo animation first
     tl.fromTo(titleRef.current, 
       { y: 60, opacity: 0, scale: 0.9 },
       { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" }
     )
-    .fromTo(subtitleRef.current,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
-      "-=0.6"
-    )
-    .fromTo(dynamicWordRef.current?.parentElement,
+
+    // Enhanced split text animations for main heading
+    if (shapingDreamsSplit?.chars.length) {
+      tl.add(
+        shapingDreamsSplit.animateIn({
+          type: 'flip',
+          duration: 0.8,
+          stagger: 0.05,
+          ease: "back.out(1.7)"
+        }),
+        "-=0.4"
+      )
+    }
+
+    if (extraordinarySplit?.chars.length) {
+      tl.add(
+        extraordinarySplit.animateIn({
+          type: 'scale',
+          duration: 0.7,
+          stagger: 0.04,
+          ease: "back.out(1.4)"
+        }),
+        "-=0.3"
+      )
+    }
+
+    if (experiencesSplit?.chars.length) {
+      tl.add(
+        experiencesSplit.animateIn({
+          type: 'wave',
+          duration: 0.6,
+          stagger: 0.03,
+          ease: "power3.out"
+        }),
+        "-=0.2"
+      )
+    }
+
+    // Dynamic word section animation
+    tl.fromTo(dynamicWordRef.current?.parentElement,
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
       "-=0.4"
     )
+    
+    // CTA buttons animation
     .fromTo(ctaRef.current,
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
       "-=0.4"
     )
+    
+    // Stats animation
     .fromTo(statsRef.current,
       { y: 40, opacity: 0 },
       { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
@@ -121,72 +441,221 @@ const Hero = () => {
       stagger: 0.5
     })
 
-    // Dynamic word animation
+    // Dynamic word animation with text splitting
+    let currentWordSplit = null
+
     const animateWord = () => {
       const currentWord = dynamicWordRef.current
       const underline = underlineRef.current
       
       if (!currentWord || !underline) return
 
-      // Exit animation
-      gsap.to(currentWord, {
-        y: -30,
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.5,
-        ease: "power2.in",
-        onComplete: () => {
-          setCurrentWordIndex((prev) => (prev + 1) % wordsLength)
-          
-          // Enter animation
-          gsap.fromTo(currentWord,
-            { y: 30, opacity: 0, scale: 1.2 },
-            { 
-              y: 0, 
-              opacity: 1, 
-              scale: 1,
-              duration: 0.5,
-              ease: "power2.out",
-              delay: 0.2
-            }
-          )
+      // Split current word into characters if not already split
+      if (currentWordSplit) {
+        currentWordSplit.revert()
+      }
 
-          // Animate underline width
+      // Exit animation with enhanced scatter effect
+      currentWordSplit = new SplitText(currentWord, { type: 'chars' })
+      
+      currentWordSplit.animateOut({
+        type: 'scatter',
+        duration: 0.4,
+        stagger: 0.02,
+        ease: "power2.in"
+      }).then(() => {
+        setCurrentWordIndex((prev) => (prev + 1) % wordsLength)
+        
+        // Small delay before enter animation
+        setTimeout(() => {
+          if (currentWordSplit) {
+            currentWordSplit.revert()
+          }
+          currentWordSplit = new SplitText(currentWord, { type: 'chars' })
+          
+          // Enter animation with enhanced rotate effect
+          currentWordSplit.animateIn({
+            type: 'rotate',
+            duration: 0.6,
+            stagger: 0.03,
+            ease: "back.out(2)"
+          })
+
+          // Animate underline width with bounce effect
           gsap.fromTo(underline,
             { width: "0%" },
             { 
               width: "100%",
               duration: 0.8,
-              ease: "power2.out",
+              ease: "elastic.out(1, 0.5)",
               delay: 0.4
             }
           )
-        }
+        }, 200)
       })
     }
+
+    // Enhanced hover effects for split text elements with multiple variations
+    const addHoverEffects = (splitInstance, element, effectType = 'wave') => {
+      if (!splitInstance?.chars.length || !element) return
+
+      const effects = {
+        wave: {
+          enter: () => gsap.to(splitInstance.chars, {
+            y: -8,
+            color: "#3b82f6",
+            textShadow: "0 0 10px rgba(59, 130, 246, 0.5)",
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: {
+              amount: 0.15,
+              from: "start"
+            }
+          }),
+          leave: () => gsap.to(splitInstance.chars, {
+            y: 0,
+            color: "",
+            textShadow: "none",
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: {
+              amount: 0.15,
+              from: "end"
+            }
+          })
+        },
+        bounce: {
+          enter: () => gsap.to(splitInstance.chars, {
+            scale: 1.1,
+            color: "#8b5cf6",
+            duration: 0.3,
+            ease: "back.out(1.7)",
+            stagger: {
+              amount: 0.1,
+              from: "center"
+            }
+          }),
+          leave: () => gsap.to(splitInstance.chars, {
+            scale: 1,
+            color: "",
+            duration: 0.3,
+            ease: "power2.out",
+            stagger: {
+              amount: 0.1,
+              from: "center"
+            }
+          })
+        },
+        rotate: {
+          enter: () => gsap.to(splitInstance.chars, {
+            rotation: 5,
+            color: "#ec4899",
+            duration: 0.3,
+            ease: "power2.out",
+            stagger: {
+              amount: 0.2,
+              from: "random"
+            }
+          }),
+          leave: () => gsap.to(splitInstance.chars, {
+            rotation: 0,
+            color: "",
+            duration: 0.3,
+            ease: "power2.out",
+            stagger: {
+              amount: 0.2,
+              from: "random"
+            }
+          })
+        }
+      }
+
+      const selectedEffect = effects[effectType] || effects.wave
+
+      const handleMouseEnter = selectedEffect.enter
+      const handleMouseLeave = selectedEffect.leave
+
+      element.addEventListener('mouseenter', handleMouseEnter)
+      element.addEventListener('mouseleave', handleMouseLeave)
+
+      // Store handlers for cleanup
+      element._hoverHandlers = { handleMouseEnter, handleMouseLeave }
+    }
+
+    // Apply different hover effects to each text element
+    setTimeout(() => {
+      addHoverEffects(shapingDreamsSplit, shapingDreamsElement, 'wave')
+      addHoverEffects(extraordinarySplit, extraordinaryElement, 'bounce')
+      addHoverEffects(experiencesSplit, experiencesElement, 'rotate')
+      
+      // Add click effects for emphasis highlighting
+      const addClickEffects = (splitInstance, element) => {
+        if (!splitInstance?.chars.length || !element) return
+
+        const handleClick = () => {
+          // Create a spectacular emphasis effect
+          gsap.to(splitInstance.chars, {
+            scale: 1.3,
+            y: -15,
+            color: "#f59e0b",
+            textShadow: "0 0 20px rgba(245, 158, 11, 0.8)",
+            duration: 0.4,
+            ease: "back.out(2)",
+            stagger: {
+              amount: 0.2,
+              from: "center"
+            },
+            onComplete: () => {
+              // Return to normal
+              gsap.to(splitInstance.chars, {
+                scale: 1,
+                y: 0,
+                color: "",
+                textShadow: "none",
+                duration: 0.6,
+                ease: "elastic.out(1, 0.3)",
+                stagger: {
+                  amount: 0.15,
+                  from: "center"
+                }
+              })
+            }
+          })
+        }
+
+        element.addEventListener('click', handleClick)
+        element.style.cursor = 'pointer'
+        element._clickHandler = handleClick
+      }
+
+      addClickEffects(shapingDreamsSplit, shapingDreamsElement)
+      addClickEffects(extraordinarySplit, extraordinaryElement)
+      addClickEffects(experiencesSplit, experiencesElement)
+    }, 2000)
 
     // Start word animation after initial animations
     const wordInterval = setInterval(animateWord, 2000)
     
-    // Initial word entrance
+    // Initial word entrance with enhanced split text
     setTimeout(() => {
-      gsap.fromTo(dynamicWordRef.current,
-        { y: 30, opacity: 0, scale: 1.2 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out"
-        }
-      )
+      if (currentWordSplit) {
+        currentWordSplit.revert()
+      }
+      currentWordSplit = new SplitText(dynamicWordRef.current, { type: 'chars' })
+      
+      currentWordSplit.animateIn({
+        type: 'fadeUp',
+        duration: 0.8,
+        stagger: 0.05,
+        ease: "back.out(1.7)"
+      })
       
       gsap.fromTo(underlineRef.current,
         { width: "0%" },
         { 
           width: "100%",
           duration: 1,
-          ease: "power2.out",
+          ease: "elastic.out(1, 0.3)",
           delay: 0.3
         }
       )
@@ -194,6 +663,31 @@ const Hero = () => {
 
     return () => {
       clearInterval(wordInterval)
+      
+      // Clean up split text instances
+      if (shapingDreamsSplit) shapingDreamsSplit.revert()
+      if (extraordinarySplit) extraordinarySplit.revert()
+      if (experiencesSplit) experiencesSplit.revert()
+      if (currentWordSplit) currentWordSplit.revert()
+      
+      // Clean up hover and click event listeners for split text
+      const cleanupEventListeners = (element) => {
+        if (element?._hoverHandlers) {
+          element.removeEventListener('mouseenter', element._hoverHandlers.handleMouseEnter)
+          element.removeEventListener('mouseleave', element._hoverHandlers.handleMouseLeave)
+          delete element._hoverHandlers
+        }
+        if (element?._clickHandler) {
+          element.removeEventListener('click', element._clickHandler)
+          element.style.cursor = ''
+          delete element._clickHandler
+        }
+      }
+      
+      cleanupEventListeners(shapingDreamsElement)
+      cleanupEventListeners(extraordinaryElement)
+      cleanupEventListeners(experiencesElement)
+      
       // Clean up logo event listeners
       if (logoImage && handleLogoHover && handleLogoLeave && handleLogoClick) {
         logoImage.removeEventListener('mouseenter', handleLogoHover)
@@ -219,8 +713,8 @@ const Hero = () => {
 
   return (
     <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-16">
-      {/* Professional Background Elements */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      {/* Professional Background Elements with Parallax */}
+      <div ref={parallaxBg} className="absolute inset-0 opacity-[0.03] parallax-bg">
         <div className="bg-element absolute top-16 left-16 w-48 h-48 border border-blue-300 rounded-full"></div>
         <div className="bg-element absolute top-32 right-16 w-64 h-64 border border-slate-300 rounded-full"></div>
         <div className="bg-element absolute bottom-16 left-1/2 transform -translate-x-1/2 w-56 h-56 border border-blue-200 rounded-full"></div>
@@ -261,16 +755,16 @@ const Hero = () => {
             {/* Left Side - Main Heading */}
             <div className="lg:col-span-3 text-center lg:text-left">
               <h1 ref={subtitleRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-800 font-light leading-tight mb-6">
-                <span className="text-blue-600 font-semibold block">Shaping Dreams</span>
-                <span className="text-slate-700 block">into Extraordinary</span>
-                <span className="text-slate-800 font-bold block">Experiences</span>
+                <span ref={shapingDreamsRef} className="text-blue-600 font-semibold block split-text-container">Shaping Dreams</span>
+                <span ref={extraordinaryRef} className="text-slate-700 block split-text-container">into Extraordinary</span>
+                <span ref={experiencesRef} className="text-slate-800 font-bold block split-text-container">Experiences</span>
               </h1>
 
               {/* Dynamic Word Section */}
               <div className="relative mb-8">
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-2">
                   <span className="text-base sm:text-lg md:text-xl text-slate-600 font-light">We deliver</span>
-                  <div className="relative inline-block">
+                  <div className="relative inline-block dynamic-word-container">
                     <div 
                       ref={dynamicWordRef}
                       className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600"
@@ -323,18 +817,18 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Stats */}
-        <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">500+</div>
+        {/* Stats with Counter Animation */}
+        <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto stagger-children">
+          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
+            <div ref={stat1Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">500+</div>
             <div className="text-slate-600 font-medium text-sm">Events Organized</div>
           </div>
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">15+</div>
+          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
+            <div ref={stat2Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">15+</div>
             <div className="text-slate-600 font-medium text-sm">Years Experience</div>
           </div>
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">100+</div>
+          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
+            <div ref={stat3Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">100+</div>
             <div className="text-slate-600 font-medium text-sm">Happy Clients</div>
           </div>
         </div>

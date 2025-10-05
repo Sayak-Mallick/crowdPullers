@@ -1,0 +1,219 @@
+/* Text Splitting Animation Enhancements */
+
+/* Character animation base styles */
+.char {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+
+/* Word animation base styles */
+.word {
+  display: inline-block;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Line animation base styles */
+.line {
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Enhanced hover effects for split text */
+.split-text-container {
+  cursor: default;
+  position: relative;
+}
+
+.split-text-container::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.3s ease;
+}
+
+.split-text-container:hover::after {
+  width: 100%;
+}
+
+/* Dynamic word special effects */
+.dynamic-word-container {
+  position: relative;
+  overflow: visible;
+}
+
+.dynamic-word-container .char {
+  transition: text-shadow 0.3s ease;
+}
+
+.dynamic-word-container:hover .char {
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* Glow effect for active characters */
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.char-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Typing effect styles */
+.typing-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background: #3b82f6;
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Floating animation for characters */
+@keyframes float-chars {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.char-float {
+  animation: float-chars 3s ease-in-out infinite;
+}
+
+/* Stagger the floating effect */
+.char-float:nth-child(2n) {
+  animation-delay: 0.1s;
+}
+
+.char-float:nth-child(3n) {
+  animation-delay: 0.2s;
+}
+
+.char-float:nth-child(4n) {
+  animation-delay: 0.3s;
+}
+
+.char-float:nth-child(5n) {
+  animation-delay: 0.4s;
+}
+
+/* Morphing text effect */
+@keyframes morph-char {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(2deg);
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(-1deg);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: scale(1.08) rotate(1deg);
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(360deg);
+  }
+}
+
+.char-morph {
+  animation: morph-char 4s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.char-morph:hover {
+  animation-play-state: running;
+}
+
+/* Parallax text layers */
+.text-layer-1 {
+  transform: translateZ(0);
+}
+
+.text-layer-2 {
+  transform: translateZ(10px);
+}
+
+.text-layer-3 {
+  transform: translateZ(20px);
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(-45deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .char {
+    transform-origin: center;
+  }
+  
+  .split-text-container::after {
+    height: 1px;
+  }
+}
+
+/* Accessibility - Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .char, .word, .line {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .char-glow,
+  .char-float,
+  .char-morph,
+  .gradient-text {
+    animation: none !important;
+  }
+  
+  .typing-cursor {
+    animation: none !important;
+    opacity: 1;
+  }
+}
