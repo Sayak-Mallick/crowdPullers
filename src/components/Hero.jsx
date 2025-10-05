@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
-import { useCounterAnimation, useParallaxAnimation } from '../hooks/useScrollAnimations'
+import { useParallaxAnimation } from '../hooks/useScrollAnimations'
 import './Hero.css'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
@@ -273,9 +273,6 @@ const Hero = () => {
   const shapingDreamsRef = useRef(null)
   const extraordinaryRef = useRef(null)
   const experiencesRef = useRef(null)
-  const stat1Ref = useCounterAnimation({ start: 0, end: 500, duration: 2, format: (value) => Math.round(value) + '+' })
-  const stat2Ref = useCounterAnimation({ start: 0, end: 15, duration: 2, format: (value) => Math.round(value) + '+' })
-  const stat3Ref = useCounterAnimation({ start: 0, end: 100, duration: 2, format: (value) => Math.round(value) + '+' })
   const parallaxBg = useParallaxAnimation({ speed: 0.3 })
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -814,22 +811,6 @@ const Hero = () => {
               </div>
             </div>
 
-          </div>
-        </div>
-
-        {/* Stats with Counter Animation */}
-        <div ref={statsRef} className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto stagger-children">
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
-            <div ref={stat1Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">500+</div>
-            <div className="text-slate-600 font-medium text-sm">Events Organized</div>
-          </div>
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
-            <div ref={stat2Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">15+</div>
-            <div className="text-slate-600 font-medium text-sm">Years Experience</div>
-          </div>
-          <div className="text-center p-5 bg-white/60 backdrop-blur-sm rounded-xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scale-on-scroll">
-            <div ref={stat3Ref} className="text-2xl sm:text-3xl font-bold text-slate-800 mb-1">100+</div>
-            <div className="text-slate-600 font-medium text-sm">Happy Clients</div>
           </div>
         </div>
       </div>

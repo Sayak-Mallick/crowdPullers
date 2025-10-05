@@ -37,9 +37,10 @@ const Contact = () => {
   ]
 
   const partners = [
-    { name: "Swarup Chakraborty", phone: "+91 98303 36402", role: "Partner" },
-    { name: "Supratim Roy", phone: "+91 98303 33821", role: "Partner" },
-    { name: "Jayanta Saha", phone: "+91 90513 42284", role: "Partner" }
+    { name: "Miss Prantika Mazumder", phone: "983029938", role: "Partner" },
+    { name: "Mr. Jayanta Saha", phone: "9875586039 / 9051342284", role: "Partner" },
+    { name: "Mr. Swarup Chakraborty", phone: "98303 36402", role: "Partner" },
+    { name: "Mr. Supratim Roy", phone: "98303 33821", role: "Partner" },
   ]
 
   useEffect(() => {
