@@ -242,14 +242,17 @@ const Contact = () => {
   }, [])
 
   const handleInputChange = (e) => {
+    const { name, value } = e.target
+    // Handle the event_type field mapping to eventType in state
+    const fieldName = name === 'event_type' ? 'eventType' : name
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [fieldName]: value
     })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = () => {
+    // Don't prevent default - let FormSubmit handle the submission
     setIsSubmitting(true)
     
     // Button press animation
@@ -263,10 +266,7 @@ const Contact = () => {
       })
     }
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Success animation
+    // Success animation will be handled by FormSubmit redirect
     if (submitButtonRef.current) {
       gsap.to(submitButtonRef.current, {
         backgroundColor: "#10B981",
@@ -274,30 +274,6 @@ const Contact = () => {
         ease: "power2.out"
       })
     }
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      eventType: '',
-      message: ''
-    })
-    setIsSubmitting(false)
-    
-    // Reset button color after a delay
-    setTimeout(() => {
-      if (submitButtonRef.current) {
-        gsap.to(submitButtonRef.current, {
-          backgroundColor: "#2563EB",
-          duration: 0.5,
-          ease: "power2.out"
-        })
-      }
-    }, 2000)
-    
-    // Show success message (you can implement a toast notification here)
-    alert('Thank you for your inquiry! We will get back to you soon.')
   }
 
   return (
@@ -321,7 +297,18 @@ const Contact = () => {
           >
             <h3 className="text-2xl font-bold mb-6 text-white">Send Us a Message</h3>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form 
+              action="https://formsubmit.co/crowdpullers.kol@gmail.com" 
+              method="POST" 
+              onSubmit={handleSubmit} 
+              className="space-y-6"
+            >
+              {/* Hidden fields for FormSubmit configuration */}
+              <input type="hidden" name="_subject" value="New Contact Form Submission from CrowdPullers Website" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value={`${window.location.origin}/thank-you.html`} />
+              
               <div className="form-element">
                 <label className="block text-slate-300 mb-2 font-medium">Full Name</label>
                 <input
@@ -364,19 +351,19 @@ const Contact = () => {
               <div className="form-element">
                 <label className="block text-slate-300 mb-2 font-medium">Event Type</label>
                 <select
-                  name="eventType"
+                  name="event_type"
                   value={formData.eventType}
                   onChange={handleInputChange}
                   required
                   className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300"
                 >
                   <option value="">Select event type</option>
-                  <option value="corporate">Corporate Event</option>
-                  <option value="wedding">Wedding</option>
-                  <option value="conference">Conference</option>
-                  <option value="exhibition">Exhibition</option>
-                  <option value="cultural">Cultural Event</option>
-                  <option value="other">Other</option>
+                  <option value="Corporate Event">Corporate Event</option>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Conference">Conference</option>
+                  <option value="Exhibition">Exhibition</option>
+                  <option value="Cultural Event">Cultural Event</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
