@@ -3,65 +3,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { useParallaxAnimation } from '../hooks/useScrollAnimations'
+import ScrollIndicator from './ScrollIndicator'
 import './Hero.css'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
-
-/**
- * TEXT-SPLITTING ANIMATION IMPLEMENTATION
- * =====================================
- * 
- * This Hero component demonstrates advanced text-splitting animations using GSAP.
- * Text-splitting allows us to animate individual characters, words, or lines independently,
- * creating dynamic and engaging visual effects.
- * 
- * FEATURES IMPLEMENTED:
- * 
- * 1. Character-by-Character Reveals:
- *    - "Shaping Dreams" - Flip animation with 3D rotation
- *    - "into Extraordinary" - Scale animation from center
- *    - "Experiences" - Wave animation with skew effects
- * 
- * 2. Dynamic Word Animation:
- *    - Scatter exit effect (characters fly in random directions)
- *    - Rotate entrance effect (characters rotate in)
- *    - Elastic underline animation
- * 
- * 3. Interactive Effects:
- *    - Hover Effects: Wave, bounce, and rotate variations
- *    - Click Effects: Emphasis highlighting with scale and glow
- *    - Responsive animations that adapt to user interaction
- * 
- * 4. Animation Types Available:
- *    - fadeUp: Characters fade in from bottom
- *    - fadeDown: Characters fade in from top  
- *    - scale: Characters scale from 0 to 1
- *    - rotate: Characters rotate while fading in
- *    - flip: Characters flip in 3D space
- *    - wave: Characters animate with staggered skew effect
- *    - scatter: Characters fly to random positions (exit effect)
- * 
- * 5. CSS Enhancements:
- *    - Custom character classes for styling
- *    - Glow and floating animations
- *    - Gradient text effects
- *    - Accessibility considerations (prefers-reduced-motion)
- * 
- * IMPLEMENTATION HIGHLIGHTS:
- * - Custom SplitText class with enhanced animation methods
- * - Proper cleanup of event listeners and GSAP instances
- * - Responsive design considerations
- * - Performance optimizations with will-change CSS properties
- * - Accessibility support for users who prefer reduced motion
- * 
- * This implementation can be easily adapted for:
- * - Hero sections with impactful headlines
- * - Interactive buttons and CTAs
- * - Emphasis and highlighting of key phrases
- * - Loading animations and transitions
- * - Marketing landing pages
- * - Portfolio showcases
- */
 
 // Enhanced SplitText utility for advanced text splitting animations
 class SplitText {
@@ -420,6 +365,71 @@ const Hero = () => {
       logoImage.addEventListener('click', handleLogoClick)
     }
 
+    // Enhanced parallax scroll effect with performance optimization
+    let ticking = false
+    
+    const handleParallaxScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset
+          const windowHeight = window.innerHeight
+          const heroHeight = heroRef.current?.offsetHeight || windowHeight
+          
+          // Only apply parallax if hero section is in viewport
+          if (scrolled < heroHeight) {
+            const parallaxBgElement = parallaxBg.current
+            const parallaxElements = document.querySelector('.parallax-elements')
+            
+            if (parallaxBgElement) {
+              // More subtle parallax effect for background
+              const parallaxSpeed = scrolled * 0.3
+              gsap.set(parallaxBgElement, {
+                transform: `translateY(${parallaxSpeed}px) scale(1.05)`,
+                force3D: true
+              })
+            }
+            
+            if (parallaxElements) {
+              // Move decorative elements at different speeds
+              const elementsSpeed = scrolled * 0.2
+              gsap.set(parallaxElements, {
+                transform: `translateY(${elementsSpeed}px)`,
+                force3D: true
+              })
+            }
+            
+            // Individual element parallax with reduced calculations
+            const bgElements = document.querySelectorAll('.bg-element')
+            bgElements.forEach((element, index) => {
+              const speed = scrolled * (0.1 + index * 0.05)
+              const rotation = scrolled * 0.02 + index * 10
+              gsap.set(element, {
+                transform: `translateY(${speed}px) rotate(${rotation}deg)`,
+                force3D: true
+              })
+            })
+            
+            const bgShapes = document.querySelectorAll('.bg-shape')
+            bgShapes.forEach((shape, index) => {
+              const speed = scrolled * (0.08 + index * 0.03)
+              const rotation = scrolled * 0.05 + index * 45
+              gsap.set(shape, {
+                transform: `translateY(${speed}px) rotate(${rotation}deg)`,
+                force3D: true
+              })
+            })
+          }
+          
+          ticking = false
+        })
+        
+        ticking = true
+      }
+    }
+    
+    // Add optimized scroll event listener for parallax
+    window.addEventListener('scroll', handleParallaxScroll, { passive: true })
+
     // Subtle background animations
     gsap.to(".bg-element", {
       rotation: 360,
@@ -661,6 +671,9 @@ const Hero = () => {
     return () => {
       clearInterval(wordInterval)
       
+      // Clean up parallax scroll listener
+      window.removeEventListener('scroll', handleParallaxScroll)
+      
       // Clean up split text instances
       if (shapingDreamsSplit) shapingDreamsSplit.revert()
       if (extraordinarySplit) extraordinarySplit.revert()
@@ -692,7 +705,7 @@ const Hero = () => {
         logoImage.removeEventListener('click', handleLogoClick)
       }
     }
-  }, [wordsLength])
+  }, [wordsLength, parallaxBg])
 
   const scrollToContact = () => {
     const contactSection = document.querySelector('#contact')
@@ -709,26 +722,40 @@ const Hero = () => {
   }
 
   return (
-    <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-16">
+    <section id="home" ref={heroRef} className="hero-parallax-container relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      {/* Parallax Background Image */}
+      <div ref={parallaxBg} className="hero-parallax-bg absolute inset-0 w-full h-full">
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat bg-fixed"
+          style={{
+            backgroundImage: 'url(/hero-bg.jpg)',
+            transform: 'scale(1.1)',
+            willChange: 'transform'
+          }}
+        ></div>
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
+
       {/* Professional Background Elements with Parallax */}
-      <div ref={parallaxBg} className="absolute inset-0 opacity-[0.03] parallax-bg">
-        <div className="bg-element absolute top-16 left-16 w-48 h-48 border border-blue-300 rounded-full"></div>
-        <div className="bg-element absolute top-32 right-16 w-64 h-64 border border-slate-300 rounded-full"></div>
-        <div className="bg-element absolute bottom-16 left-1/2 transform -translate-x-1/2 w-56 h-56 border border-blue-200 rounded-full"></div>
+      <div className="absolute inset-0 opacity-[0.08] parallax-elements">
+        <div className="bg-element absolute top-16 left-16 w-48 h-48 border border-white/30 rounded-full"></div>
+        <div className="bg-element absolute top-32 right-16 w-64 h-64 border border-white/20 rounded-full"></div>
+        <div className="bg-element absolute bottom-16 left-1/2 transform -translate-x-1/2 w-56 h-56 border border-white/25 rounded-full"></div>
       </div>
 
       {/* Subtle Geometric Shapes */}
-      <div className="absolute inset-0 overflow-hidden opacity-[0.05]">
-        <div className="bg-shape absolute top-1/4 left-1/4 w-12 h-12 border border-blue-400 rotate-45"></div>
-        <div className="bg-shape absolute bottom-1/4 right-1/4 w-8 h-8 border border-slate-400 rounded-full"></div>
-        <div className="bg-shape absolute top-1/3 right-1/3 w-6 h-6 bg-blue-300 rounded-full"></div>
-        <div className="bg-shape absolute bottom-1/3 left-1/3 w-10 h-10 border border-blue-300 rotate-12"></div>
+      <div className="absolute inset-0 overflow-hidden opacity-[0.1]">
+        <div className="bg-shape absolute top-1/4 left-1/4 w-12 h-12 border border-white/40 rotate-45"></div>
+        <div className="bg-shape absolute bottom-1/4 right-1/4 w-8 h-8 border border-white/30 rounded-full"></div>
+        <div className="bg-shape absolute top-1/3 right-1/3 w-6 h-6 bg-white/20 rounded-full"></div>
+        <div className="bg-shape absolute bottom-1/3 left-1/3 w-10 h-10 border border-white/35 rotate-12"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Certification Badge */}
         <div className="mb-6 mt-6 flex justify-center">
-          <div className="inline-flex items-center justify-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="inline-flex items-center justify-center px-4 py-2 bg-white/90 backdrop-blur-md border border-white/30 rounded-full text-slate-700 text-sm font-medium shadow-xl hover:shadow-2xl transition-all duration-300">
             <div className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></div>
             <span className="text-center leading-tight">ISO 9001:2015 Certified</span>
           </div>
@@ -751,30 +778,30 @@ const Hero = () => {
             
             {/* Left Side - Main Heading */}
             <div className="lg:col-span-3 text-center lg:text-left">
-              <h1 ref={subtitleRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-800 font-light leading-tight mb-6">
-                <span ref={shapingDreamsRef} className="text-blue-600 font-semibold block split-text-container">Shaping Dreams</span>
-                <span ref={extraordinaryRef} className="text-slate-700 block split-text-container">into Extraordinary</span>
-                <span ref={experiencesRef} className="text-slate-800 font-bold block split-text-container">Experiences</span>
+              <h1 ref={subtitleRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-light leading-tight mb-6 drop-shadow-lg">
+                <span ref={shapingDreamsRef} className="text-blue-300 font-semibold block split-text-container">Shaping Dreams</span>
+                <span ref={extraordinaryRef} className="text-white block split-text-container">into Extraordinary</span>
+                <span ref={experiencesRef} className="text-white font-bold block split-text-container">Experiences</span>
               </h1>
 
               {/* Dynamic Word Section */}
               <div className="relative mb-8">
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-2">
-                  <span className="text-base sm:text-lg md:text-xl text-slate-600 font-light">We deliver</span>
+                  <span className="text-base sm:text-lg md:text-xl text-gray-200 font-light drop-shadow-md">We deliver</span>
                   <div className="relative inline-block dynamic-word-container">
                     <div 
                       ref={dynamicWordRef}
-                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600"
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300 drop-shadow-lg"
                     >
                       {words[currentWordIndex]}
                     </div>
                     <div 
                       ref={underlineRef}
-                      className="absolute -bottom-1 left-0 h-1 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"
+                      className="absolute -bottom-1 left-0 h-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-full"
                       style={{ width: '0%' }}
                     ></div>
                   </div>
-                  <span className="text-base sm:text-lg md:text-xl text-slate-600 font-light">experiences</span>
+                  <span className="text-base sm:text-lg md:text-xl text-gray-200 font-light drop-shadow-md">experiences</span>
                 </div>
               </div>
             </div>
@@ -816,11 +843,7 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-        <div className="w-5 h-8 border-2 border-slate-400 rounded-full flex justify-center animate-pulse hover:border-blue-500 transition-colors duration-300">
-          <div className="w-0.5 h-2 bg-slate-500 rounded-full mt-1.5"></div>
-        </div>
-      </div>
+      <ScrollIndicator targetSection="about" />
     </section>
   )
 }

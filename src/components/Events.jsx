@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ScrollIndicator from './ScrollIndicator'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -255,7 +256,7 @@ const Events = () => {
   }, [])
 
   return (
-    <section id="events" ref={sectionRef} className="py-20 bg-gradient-to-b from-gray-900 to-black text-white">
+    <section id="events" ref={sectionRef} className="relative py-20 bg-gradient-to-b from-gray-900 to-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="main-title text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
@@ -342,6 +343,15 @@ const Events = () => {
           </div>
         </div>
       </div>
+      
+      {/* Scroll Indicator */}
+      <ScrollIndicator 
+        targetSection="celebscape" 
+        borderColor="border-white/60" 
+        hoverColor="hover:border-blue-400"
+        dotColor="bg-white/80"
+        hoverDotColor="group-hover:bg-blue-400"
+      />
     </section>
   )
 }

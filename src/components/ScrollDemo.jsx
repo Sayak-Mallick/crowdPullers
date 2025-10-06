@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import ScrollAnimations from '../utils/ScrollAnimations'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ScrollIndicator from './ScrollIndicator'
 import './ParallaxStyles.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -138,7 +139,7 @@ const ScrollDemo = () => {
   }, [parallaxBgRef])
 
   return (
-    <div className="relative overflow-hidden">
+    <section id="scroll-demo" className="relative overflow-hidden">
       {/* Scroll Progress Indicator */}
       <div className="scroll-indicator" style={{ transform: 'scaleX(0)' }} id="scroll-progress"></div>
       {/* Hero Section with High-Quality Parallax Background */}
@@ -388,7 +389,16 @@ const ScrollDemo = () => {
         <div className="parallax-bg absolute bottom-40 left-1/4 w-3 h-3 bg-pink-500 rounded-full"></div>
         <div className="parallax-bg absolute bottom-20 right-1/3 w-5 h-5 bg-indigo-500 rounded-full"></div>
       </div>
-    </div>
+      
+      {/* Scroll Indicator */}
+      <ScrollIndicator 
+        targetSection="services" 
+        borderColor="border-white/60" 
+        hoverColor="hover:border-purple-400"
+        dotColor="bg-white/80"
+        hoverDotColor="group-hover:bg-purple-400"
+      />
+    </section>
   )
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ScrollIndicator from './ScrollIndicator'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -575,6 +576,15 @@ const Celebscape = () => {
           </div>
         </div>
       </div>
+      
+      {/* Scroll Indicator */}
+      <ScrollIndicator 
+        targetSection="clients" 
+        borderColor="border-gray-400/60" 
+        hoverColor="hover:border-blue-600"
+        dotColor="bg-gray-600/80"
+        hoverDotColor="group-hover:bg-blue-600"
+      />
     </section>
   )
 }

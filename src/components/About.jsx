@@ -1,4 +1,5 @@
 import { useRevealAnimation, useStaggerAnimation } from '../hooks/useScrollAnimations'
+import ScrollIndicator from './ScrollIndicator'
 
 const About = () => {
   const titleRef = useRevealAnimation({ direction: 'up', distance: 50, duration: 1 })
@@ -7,7 +8,7 @@ const About = () => {
   const visionRef = useRevealAnimation({ direction: 'scale', duration: 1 })
 
   return (
-    <section id="about" className="py-24 bg-slate-50 animate-reveal">
+    <section id="about" className="relative py-24 bg-slate-50 animate-reveal">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 ref={titleRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
@@ -97,6 +98,15 @@ const About = () => {
           </p>
         </div>
       </div>
+      
+      {/* Scroll Indicator */}
+      <ScrollIndicator 
+        targetSection="scroll-demo" 
+        borderColor="border-slate-400/60" 
+        hoverColor="hover:border-blue-600"
+        dotColor="bg-slate-600/80"
+        hoverDotColor="group-hover:bg-blue-600"
+      />
     </section>
   )
 }
