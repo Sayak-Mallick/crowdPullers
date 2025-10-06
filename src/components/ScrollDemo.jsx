@@ -21,6 +21,14 @@ const ScrollDemo = () => {
   const textRevealRef = useRef(null)
   const magneticRef = useRef(null)
 
+  // Scroll to contact section function
+  const scrollToContact = () => {
+    const contactSection = document.querySelector('#contact')
+    if (contactSection) {
+      gsap.to(window, { duration: 1.5, scrollTo: contactSection, ease: "power2.inOut" })
+    }
+  }
+
   useEffect(() => {
     // High-quality image parallax effect for hero section
     if (parallaxBgRef.current) {
@@ -374,7 +382,8 @@ const ScrollDemo = () => {
             </p>
             <button 
               ref={magneticRef}
-              className="bg-white text-indigo-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 hover:shadow-xl transform hover:-translate-y-1 drop-shadow-lg"
+              onClick={scrollToContact}
+              className="bg-white text-indigo-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 hover:shadow-xl transform hover:-translate-y-1 drop-shadow-lg cursor-pointer smooth-animation"
             >
               Plan Your Event Today
             </button>

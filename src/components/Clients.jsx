@@ -322,7 +322,7 @@ const Clients = () => {
         </div>
 
         {/* Partnership CTA */}
-        <div className="cta-section mt-20 text-center">
+        {/* <div className="cta-section mt-20 text-center">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 rounded-3xl shadow-2xl">
             <h3 className="text-3xl font-bold mb-4">Join Our Growing Family of Clients</h3>
             <p className="text-xl mb-8 opacity-90">
@@ -332,7 +332,7 @@ const Clients = () => {
               Partner With Us
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
       
       {/* Scroll Indicator */}
