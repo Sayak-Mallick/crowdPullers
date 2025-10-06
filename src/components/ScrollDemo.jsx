@@ -1,6 +1,11 @@
 import { useRevealAnimation, useParallaxAnimation, useCounterAnimation, useStaggerAnimation } from '../hooks/useScrollAnimations'
 import { useEffect, useRef } from 'react'
 import ScrollAnimations from '../utils/ScrollAnimations'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import './ParallaxStyles.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const ScrollDemo = () => {
   // Animation hooks
@@ -16,6 +21,38 @@ const ScrollDemo = () => {
   const magneticRef = useRef(null)
 
   useEffect(() => {
+    // High-quality image parallax effect for hero section
+    if (parallaxBgRef.current) {
+      ScrollAnimations.imageParallax(parallaxBgRef.current, {
+        speed: 0.6,
+        scale: 1.3,
+        ease: "none"
+      })
+    }
+
+    // Apply parallax to all parallax containers
+    const parallaxContainers = document.querySelectorAll('.parallax-container')
+    parallaxContainers.forEach((container, index) => {
+      const parallaxElement = container.querySelector('.parallax-element')
+      if (parallaxElement) {
+        ScrollAnimations.imageParallax(parallaxElement, {
+          speed: 0.4 + (index * 0.1), // Vary speed for each section
+          scale: 1.2,
+          ease: "none",
+          trigger: container
+        })
+      }
+
+      // Layered parallax for floating elements in each container
+      ScrollAnimations.layeredImageParallax(container, {
+        layers: [
+          { selector: '.parallax-bg', speed: 0.2 },
+          { selector: '.parallax-mid', speed: 0.4 },
+          { selector: '.parallax-front', speed: 0.6 }
+        ]
+      })
+    })
+
     // Advanced text reveal animation
     if (textRevealRef.current) {
       ScrollAnimations.textReveal(textRevealRef.current, {
@@ -42,32 +79,122 @@ const ScrollDemo = () => {
         stagger: 0.8
       })
     }
-  }, [])
+
+    // Add smooth scrolling performance optimization
+    gsap.config({
+      force3D: true,
+      nullTargetWarn: false
+    })
+
+    // Scroll progress indicator
+    const progressBar = document.getElementById('scroll-progress')
+    if (progressBar) {
+      ScrollAnimations.scrollProgressBar(progressBar, {
+        target: document.body,
+        axis: 'horizontal'
+      })
+    }
+
+    // Enable smooth scrolling with Lenis (if available)
+    const initSmoothScroll = async () => {
+      try {
+        const { default: Lenis } = await import('lenis')
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smooth: true,
+          smoothTouch: false
+        })
+
+        function raf(time) {
+          lenis.raf(time)
+          requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
+
+        // Sync with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update)
+        
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000)
+        })
+      } catch {
+        console.log('Lenis smooth scroll not available, using default scroll')
+      }
+    }
+    
+    initSmoothScroll()
+
+    // Refresh ScrollTrigger on window resize for responsive parallax
+    const handleResize = () => {
+      ScrollTrigger.refresh()
+    }
+    
+    window.addEventListener('resize', handleResize)
+    
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [parallaxBgRef])
 
   return (
     <div className="relative overflow-hidden">
-      {/* Parallax Background Section */}
-      <div className="relative min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        {/* Parallax Background Elements */}
-        <div ref={parallaxBgRef} className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-20 w-32 h-32 border border-white rounded-full"></div>
-          <div className="absolute top-40 right-20 w-48 h-48 border border-purple-300 rounded-full"></div>
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-40 h-40 border border-blue-300 rounded-full"></div>
-          <div className="absolute top-1/2 left-10 w-20 h-20 bg-white/10 rounded-full"></div>
-          <div className="absolute bottom-1/3 right-10 w-24 h-24 bg-purple-400/20 rounded-full"></div>
+      {/* Scroll Progress Indicator */}
+      <div className="scroll-indicator" style={{ transform: 'scaleX(0)' }} id="scroll-progress"></div>
+      {/* Hero Section with High-Quality Parallax Background */}
+      <div className="relative min-h-screen parallax-container overflow-hidden">
+        {/* High-Quality Background Image with Parallax */}
+        <div className="absolute inset-0">
+          <div 
+            ref={parallaxBgRef} 
+            className="parallax-element absolute inset-0 w-full h-[120%] -top-[10%]"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2560&q=90')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Gradient Overlay for Better Text Readability */}
+          <div className="absolute inset-0 " />
+          
+          {/* Additional Overlay for Depth */}
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+
+        {/* Floating Parallax Elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="parallax-mid absolute top-20 left-20 w-32 h-32 border border-white/40 rounded-full backdrop-blur-sm"></div>
+          <div className="parallax-mid absolute top-40 right-20 w-48 h-48 border border-purple-300/40 rounded-full backdrop-blur-sm"></div>
+          <div className="parallax-front absolute bottom-20 left-1/2 transform -translate-x-1/2 w-40 h-40 border border-blue-300/40 rounded-full backdrop-blur-sm"></div>
+          <div className="parallax-bg absolute top-1/2 left-10 w-20 h-20 bg-white/10 rounded-full backdrop-blur-md"></div>
+          <div className="parallax-front absolute bottom-1/3 right-10 w-24 h-24 bg-purple-400/20 rounded-full backdrop-blur-md"></div>
         </div>
 
         <div className="relative z-10 flex items-center justify-center min-h-screen">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-6">
-              CROWDpullers
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-6 text-shadow-strong">
+              <img 
+                src="/crowdPullers.png" 
+                alt="CROWDpullers" 
+                className="mx-auto max-h-32 md:max-h-40 w-auto filter drop-shadow-2xl"
+              />
+              <span className="block text-white animate-pulse">
                 Event Excellence
               </span>
             </h1>
-            <p ref={subtitleRef} className="text-xl md:text-2xl opacity-90 mb-8">
+            <p ref={subtitleRef} className="text-xl md:text-2xl mb-8 text-shadow-strong rounded-lg px-6 py-3 inline-block">
               Shaping dreams into extraordinary experiences since 2008
             </p>
+            <div className="mt-8 flex justify-center gap-4">
+              <button className="bg-white/20 backdrop-blur-md text-white px-8 py-3 rounded-full font-semibold border border-white/30 hover:bg-white/30 transition-all duration-300 smooth-animation">
+                Explore Services
+              </button>
+              <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 smooth-animation shadow-xl">
+                Lets Connect
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -153,13 +280,28 @@ const ScrollDemo = () => {
       </section>
 
       {/* Advanced Animations Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="max-w-6xl mx-auto px-4">
+      <section className="relative py-20 parallax-container overflow-hidden">
+        {/* Background Image with Parallax */}
+        <div className="absolute inset-0">
+          <div 
+            className="parallax-element absolute inset-0 w-full h-[120%] -top-[10%]"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2560&q=90')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-purple-900/85 to-slate-900/90" />
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+        
+        <div className="relative z-10 max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 ref={textRevealRef} className="text-4xl font-bold text-white mb-6">
+            <h2 ref={textRevealRef} className="text-4xl font-bold text-white mb-6 drop-shadow-2xl">
               Our Event Management Expertise
             </h2>
-            <p className="text-xl text-white/80 animate-reveal">
+            <p className="text-xl text-white/90 animate-reveal drop-shadow-lg">
               Comprehensive solutions for unforgettable events
             </p>
           </div>
@@ -205,18 +347,33 @@ const ScrollDemo = () => {
       </section>
 
       {/* Scale Animation Section */}
-      <section className="py-20 bg-gradient-to-r from-indigo-900 to-purple-900">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div ref={scaleRef} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-12">
-            <h2 className="text-4xl font-bold text-white mb-6">
+      <section className="relative py-20 parallax-container overflow-hidden">
+        {/* Background Image with Parallax */}
+        <div className="absolute inset-0">
+          <div 
+            className="parallax-element absolute inset-0 w-full h-[120%] -top-[10%]"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2560&q=90')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/85 to-purple-900/85" />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+          <div ref={scaleRef} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-12 shadow-2xl">
+            <h2 className="text-4xl font-bold text-white mb-6 drop-shadow-xl">
               Ready to Create Your Next Event?
             </h2>
-            <p className="text-xl text-white/90 mb-8">
+            <p className="text-xl text-white/90 mb-8 drop-shadow-lg">
               From concept to execution, let CROWDpullers turn your vision into an extraordinary experience
             </p>
             <button 
               ref={magneticRef}
-              className="bg-white text-indigo-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 hover:shadow-xl transform hover:-translate-y-1"
+              className="bg-white text-indigo-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 hover:shadow-xl transform hover:-translate-y-1 drop-shadow-lg"
             >
               Plan Your Event Today
             </button>

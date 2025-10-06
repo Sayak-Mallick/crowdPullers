@@ -347,10 +347,152 @@ export const ScrollAnimations = {
         }
       })
     }
+  },
+
+  /**
+   * High-Quality Image Parallax
+   * Creates smooth parallax effect with high-quality background images
+   */
+  imageParallax: (element, options = {}) => {
+    const {
+      speed = 0.5,
+      scale = 1.2,
+      ease = "none",
+      trigger = element,
+      start = "top bottom",
+      end = "bottom top"
+    } = options
+
+    // Ensure the image scales properly for parallax
+    gsap.set(element, {
+      scale: scale,
+      transformOrigin: "center center"
+    })
+
+    // Create the parallax animation
+    gsap.to(element, {
+      yPercent: -50 * speed,
+      ease: ease,
+      scrollTrigger: {
+        trigger: trigger,
+        start: start,
+        end: end,
+        scrub: true,
+        invalidateOnRefresh: true
+      }
+    })
+  },
+
+  /**
+   * Advanced Image Parallax with Multiple Layers
+   * Creates depth with multiple image layers moving at different speeds
+   */
+  layeredImageParallax: (container, options = {}) => {
+    const {
+      layers = [
+        { selector: '.parallax-bg', speed: 0.2 },
+        { selector: '.parallax-mid', speed: 0.5 },
+        { selector: '.parallax-front', speed: 0.8 }
+      ]
+    } = options
+
+    layers.forEach(layer => {
+      const elements = container.querySelectorAll(layer.selector)
+      elements.forEach(element => {
+        ScrollAnimations.imageParallax(element, {
+          speed: layer.speed,
+          trigger: container
+        })
+      })
+    })
+  },
+
+  /**
+   * Smooth Image Reveal with Parallax
+   * Reveals image with clip-path animation combined with parallax
+   */
+  imageRevealParallax: (element, options = {}) => {
+    const {
+      direction = 'up', // 'up', 'down', 'left', 'right'
+      duration = 1.5,
+      ease = "power2.out",
+      parallaxSpeed = 0.3
+    } = options
+
+    const img = element.querySelector('img') || element
+
+    // Set initial clip-path based on direction
+    const clipPaths = {
+      up: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
+      down: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
+      left: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
+      right: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)'
+    }
+
+    const finalClipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+
+    gsap.set(element, {
+      clipPath: clipPaths[direction]
+    })
+
+    // Reveal animation
+    gsap.to(element, {
+      clipPath: finalClipPath,
+      duration: duration,
+      ease: ease,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      }
+    })
+
+    // Add parallax effect
+    ScrollAnimations.imageParallax(img, {
+      speed: parallaxSpeed,
+      trigger: element
+    })
+  },
+
+  /**
+   * Image Zoom Parallax
+   * Combines zoom effect with parallax for dramatic impact
+   */
+  imageZoomParallax: (element, options = {}) => {
+    const {
+      zoomFrom = 1.5,
+      zoomTo = 1,
+      parallaxSpeed = 0.4,
+      duration = 1.2,
+      ease = "power2.out"
+    } = options
+
+    const img = element.querySelector('img') || element
+
+    // Set initial scale
+    gsap.set(img, { scale: zoomFrom })
+
+    // Zoom animation
+    gsap.to(img, {
+      scale: zoomTo,
+      duration: duration,
+      ease: ease,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 90%",
+        toggleActions: "play none none reverse"
+      }
+    })
+
+    // Add parallax effect
+    ScrollAnimations.imageParallax(img, {
+      speed: parallaxSpeed,
+      trigger: element
+    })
   }
 }
 
-// CSS for typewriter cursor
+// CSS for typewriter cursor and parallax effects
 const style = document.createElement('style')
 style.textContent = `
   .typewriter-cursor {
@@ -358,6 +500,30 @@ style.textContent = `
   }
   
   .scroll-particle {
+    will-change: transform;
+  }
+  
+  .parallax-container {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .parallax-element {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+  
+  .parallax-image {
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  .smooth-parallax {
+    transform: translate3d(0, 0, 0);
     will-change: transform;
   }
 `

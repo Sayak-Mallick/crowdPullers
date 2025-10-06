@@ -150,8 +150,8 @@ function App() {
     <div className="overflow-x-hidden bg-white">
       <Navbar />
       <Hero />
-      <ScrollDemo />
       <About />
+      <ScrollDemo />
       <Services />
       <Events />
       <Celebscape />
