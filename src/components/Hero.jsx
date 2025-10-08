@@ -705,21 +705,7 @@ const Hero = () => {
         logoImage.removeEventListener('click', handleLogoClick)
       }
     }
-  }, [wordsLength, parallaxBg])
-
-  const scrollToContact = () => {
-    const contactSection = document.querySelector('#contact')
-    if (contactSection) {
-      gsap.to(window, { duration: 1.5, scrollTo: contactSection, ease: "power2.inOut" })
-    }
-  }
-
-  const scrollToEvents = () => {
-    const eventsSection = document.querySelector('#events')
-    if (eventsSection) {
-      gsap.to(window, { duration: 1.5, scrollTo: eventsSection, ease: "power2.inOut" })
-    }
-  }
+  }, [wordsLength, parallaxBg]);
 
   return (
     <section id="home" ref={heroRef} className="hero-parallax-container relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
@@ -734,7 +720,7 @@ const Hero = () => {
           }}
         ></div>
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        {/* <div className="absolute inset-0 bg-black/40"></div> */}
       </div>
 
       {/* Professional Background Elements with Parallax */}
@@ -773,71 +759,36 @@ const Hero = () => {
         </div>
 
         {/* Main Content Section */}
-        <div className="mb-12 max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Side - Main Heading */}
-            <div className="lg:col-span-3 text-center lg:text-left">
-              <h1 ref={subtitleRef} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-light leading-tight mb-6 drop-shadow-lg">
-                <span ref={shapingDreamsRef} className="text-blue-300 font-semibold block split-text-container">Shaping Dreams</span>
-                <span ref={extraordinaryRef} className="text-white block split-text-container">into Extraordinary</span>
+        <div className="mb-12 max-w-6xl mx-auto">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 ref={subtitleRef} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-light leading-tight mb-8 drop-shadow-lg">
+                <span ref={shapingDreamsRef} className="text-blue-300 font-semibold block split-text-container mb-2">Shaping Dreams</span>
+                <span ref={extraordinaryRef} className="text-white block split-text-container mb-2">into Extraordinary</span>
                 <span ref={experiencesRef} className="text-white font-bold block split-text-container">Experiences</span>
               </h1>
 
               {/* Dynamic Word Section */}
-              <div className="relative mb-8">
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-2">
-                  <span className="text-base sm:text-lg md:text-xl text-gray-200 font-light drop-shadow-md">We deliver</span>
+              <div className="relative mb-12">
+                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                  <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 font-light drop-shadow-md">We deliver</span>
                   <div className="relative inline-block dynamic-word-container">
                     <div 
                       ref={dynamicWordRef}
-                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-300 drop-shadow-lg"
+                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-300 drop-shadow-lg"
                     >
                       {words[currentWordIndex]}
                     </div>
                     <div 
                       ref={underlineRef}
-                      className="absolute -bottom-1 left-0 h-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-full"
+                      className="absolute -bottom-2 left-0 h-1.5 bg-gradient-to-r from-blue-300 to-blue-500 rounded-full"
                       style={{ width: '0%' }}
                     ></div>
                   </div>
-                  <span className="text-base sm:text-lg md:text-xl text-gray-200 font-light drop-shadow-md">experiences</span>
+                  <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-200 font-light drop-shadow-md">experiences</span>
                 </div>
               </div>
             </div>
-
-            {/* Right Side - CTA Buttons */}
-            <div className="lg:col-span-2 flex justify-center lg:justify-end">
-              <div ref={ctaRef} className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/50 w-full max-w-4xl">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button
-                    onClick={scrollToEvents}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl text-base font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group whitespace-nowrap min-w-0"
-                  >
-                    Explore Events
-                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 12h12" />
-                    </svg>
-                  </button>
-                  
-                  <button
-                    onClick={scrollToContact}
-                    className="flex-1 border-2 border-slate-300 text-slate-700 px-8 py-4 rounded-xl text-base font-semibold hover:bg-slate-700 hover:text-white hover:border-slate-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group bg-white/80 shadow-md whitespace-nowrap min-w-0"
-                  >
-                    Get In Touch
-                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  </button>
-                </div>
-                
-                {/* Decorative element */}
-                <div className="mt-4 flex justify-center">
-                  <div className="w-12 h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>

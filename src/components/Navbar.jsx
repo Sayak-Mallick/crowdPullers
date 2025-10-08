@@ -67,10 +67,10 @@ const Navbar = () => {
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className={`px-4 py-2 text-sm font-medium transition-all duration-300 relative group ${
+                  className={`px-4 py-2 text-sm font-medium transition-all cursor-pointer duration-300 relative group ${
                     scrolled 
                       ? 'text-slate-700 hover:text-blue-600' 
-                      : 'text-slate-800 hover:text-blue-600'
+                      : 'text-white hover:text-blue-600'
                   }`}
                 >
                   {item.name}
@@ -100,7 +100,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`md:hidden overflow-hidden bg-white border-t border-slate-200 transition-all duration-300 ${
+        className={`md:hidden overflow-hidden border-t border-slate-200 transition-all duration-300 ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
@@ -109,7 +109,7 @@ const Navbar = () => {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
-              className="block px-4 py-3 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 w-full text-left rounded-lg transition-all duration-300"
+              className="block px-4 py-3 text-base font-medium text-slate-700 hover:text-blue-600 w-full text-left rounded-lg cursor-pointer transition-all duration-300"
             >
               {item.name}
             </button>

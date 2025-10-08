@@ -96,19 +96,6 @@ const Services = () => {
             </div>
           ))}
         </div>
-
-        {/* Call to Action */}
-        <div className="mt-20 text-center">
-          <div className="bg-blue-600 text-white p-12 rounded-2xl shadow-xl">
-            <h3 className="text-3xl font-bold mb-4">Ready to Plan Your Next Event?</h3>
-            <p className="text-xl mb-8">
-              Let us turn your vision into an unforgettable experience with our professional event management services.
-            </p>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-slate-50 transition-all duration-300 transform hover:-translate-y-1">
-              Get Started Today
-            </button>
-          </div>
-        </div>
       </div>
       
       {/* Scroll Indicator */}

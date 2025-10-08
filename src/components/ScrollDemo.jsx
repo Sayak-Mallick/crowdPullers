@@ -17,17 +17,8 @@ const ScrollDemo = () => {
   const counter1Ref = useCounterAnimation({ start: 0, end: 500, duration: 2.5, format: (value) => Math.round(value) })
   const counter2Ref = useCounterAnimation({ start: 0, end: 15, duration: 2, format: (value) => Math.round(value) + '+' })
   const counter3Ref = useCounterAnimation({ start: 0, end: 100, duration: 1.8, format: (value) => Math.round(value) + '+' })
-  const scaleRef = useRevealAnimation({ direction: 'scale', duration: 1.5 })
   const textRevealRef = useRef(null)
   const magneticRef = useRef(null)
-
-  // Scroll to contact section function
-  const scrollToContact = () => {
-    const contactSection = document.querySelector('#contact')
-    if (contactSection) {
-      gsap.to(window, { duration: 1.5, scrollTo: contactSection, ease: "power2.inOut" })
-    }
-  }
 
   useEffect(() => {
     // High-quality image parallax effect for hero section
@@ -353,11 +344,21 @@ const ScrollDemo = () => {
             </div>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+      <div className='mt-8'>
+          <ScrollIndicator
+            targetSection="services"
+            borderColor="border-white/60"
+            hoverColor="hover:border-purple-400"
+            dotColor="bg-white/80"
+            hoverDotColor="group-hover:bg-purple-400"
+          />
+      </div>
       </section>
 
       {/* Scale Animation Section */}
-      <section className="relative py-20 parallax-container overflow-hidden">
-        {/* Background Image with Parallax */}
+      {/* <section className="relative py-20 parallax-container overflow-hidden">
         <div className="absolute inset-0">
           <div 
             className="parallax-element absolute inset-0 w-full h-[120%] -top-[10%]"
@@ -389,7 +390,7 @@ const ScrollDemo = () => {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Additional parallax elements for depth */}
       <div className="fixed inset-0 pointer-events-none opacity-5 z-0">
@@ -398,15 +399,6 @@ const ScrollDemo = () => {
         <div className="parallax-bg absolute bottom-40 left-1/4 w-3 h-3 bg-pink-500 rounded-full"></div>
         <div className="parallax-bg absolute bottom-20 right-1/3 w-5 h-5 bg-indigo-500 rounded-full"></div>
       </div>
-      
-      {/* Scroll Indicator */}
-      <ScrollIndicator 
-        targetSection="services" 
-        borderColor="border-white/60" 
-        hoverColor="hover:border-purple-400"
-        dotColor="bg-white/80"
-        hoverDotColor="group-hover:bg-purple-400"
-      />
     </section>
   )
 }
