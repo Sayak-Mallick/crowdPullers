@@ -740,7 +740,7 @@ const Hero = () => {
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Certification Badge */}
-        <div className="mb-6 mt-6 flex justify-center">
+        <div className="mb-6 mt-22 flex justify-center">
           <div className="inline-flex items-center justify-center px-4 py-2 bg-white/90 backdrop-blur-md border border-white/30 rounded-full text-slate-700 text-sm font-medium shadow-xl hover:shadow-2xl transition-all duration-300">
             <div className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></div>
             <span className="text-center leading-tight">ISO 9001:2015 Certified</span>
