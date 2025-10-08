@@ -8,6 +8,12 @@ import './Hero.css'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
+const HERO_TEXT_CONFIG = {
+  line1: "Shaping Dreams",      // First line (blue color, semibold)
+  line2: "into Extraordinary",  // Second line (white color, normal weight)
+  line3: "Experiences"          // Third line (white color, bold)
+}
+
 // Enhanced SplitText utility for advanced text splitting animations
 class SplitText {
   constructor(element, options = {}) {
@@ -763,9 +769,9 @@ const Hero = () => {
           <div className="flex items-center justify-center min-h-[50vh]">
             <div className="text-center max-w-4xl mx-auto px-4">
               <h1 ref={subtitleRef} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-light leading-tight mb-8 drop-shadow-lg">
-                <span ref={shapingDreamsRef} className="text-blue-300 font-semibold block split-text-container mb-2">Shaping Dreams</span>
-                <span ref={extraordinaryRef} className="text-white block split-text-container mb-2">into Extraordinary</span>
-                <span ref={experiencesRef} className="text-white font-bold block split-text-container">Experiences</span>
+                <span ref={shapingDreamsRef} className="text-blue-300 font-semibold block split-text-container mb-2">{HERO_TEXT_CONFIG.line1}</span>
+                <span ref={extraordinaryRef} className="text-white block split-text-container mb-2">{HERO_TEXT_CONFIG.line2}</span>
+                <span ref={experiencesRef} className="text-white font-bold block split-text-container">{HERO_TEXT_CONFIG.line3}</span>
               </h1>
 
               {/* Dynamic Word Section */}
