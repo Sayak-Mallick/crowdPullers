@@ -555,22 +555,6 @@ const Celebscape = () => {
             </div>
           </div>
         </div>
-
-        {/* Call to Action */}
-        <div className="text-center">
-          <div className="bg-white/90 backdrop-blur-xl rounded-2xl p-8 border border-gray-200/50 shadow-xl">
-            <h4 className="text-2xl font-bold text-gray-900 mb-4">Ready to Create Your Next Event?</h4>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">Let us bring your vision to life with our proven expertise in event management and celebrity coordination.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 px-8 rounded-xl text-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-xl">
-                Explore Our Portfolio
-              </button>
-              <button className="bg-white text-gray-700 border-2 border-gray-300 font-semibold py-4 px-8 rounded-xl text-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 shadow-lg hover:scale-105">
-                Get In Touch
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
       
       {/* Scroll Indicator */}
