@@ -88,12 +88,10 @@ const About = () => {
         </div>
 
         {/* Vision Statement */}
-        <div
-          ref={visionRef}
-          className="mt-20 text-center bg-blue-600 text-white p-12 rounded-2xl shadow-xl"
-        >
-          <h3 className="text-3xl font-bold mb-6">Our Vision</h3>
-          <p className="text-xl leading-relaxed max-w-4xl mx-auto">
+        <div ref={visionRef} className="mt-20 text-center bg-white border border-slate-200 p-12 rounded-2xl shadow-lg">
+          <h3 className="text-3xl font-bold mb-6 text-slate-800">Our Vision</h3>
+          <div className="w-16 h-0.5 bg-slate-400 mx-auto mb-8"></div>
+          <p className="text-xl leading-relaxed max-w-4xl mx-auto text-slate-600 font-medium">
             We are ready to make a difference in your business performance and turn your visions into highly marketable solutions. From initial planning to final execution, we work on every aspect that makes an event a huge success.
           </p>
         </div>
