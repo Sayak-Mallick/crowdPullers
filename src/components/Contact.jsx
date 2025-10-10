@@ -525,7 +525,7 @@ const Contact = () => {
             />
           </div>
           <p className="text-slate-400 mb-4">
-            © 2025 CROWDpullers. All rights reserved. | ISO 9001:2015 Certified Company
+           © {new Date().getFullYear()} CROWDpullers. All rights reserved. | ISO 9001:2015 Certified Company
           </p>
           <p className="text-slate-500 text-sm">
             Efficient • Fast • Personalised
