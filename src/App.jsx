@@ -6,6 +6,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Services from './components/Services'
 import Events from './components/Events'
+import EventGallery from './components/EventGallery'
 import Celebscape from './components/Celebscape'
 import Clients from './components/Clients'
 import Contact from './components/Contact'
@@ -154,6 +155,7 @@ function App() {
       <ScrollDemo />
       <Services />
       <Events />
+      <EventGallery />
       <Celebscape />
       <Clients />
       <Contact />
