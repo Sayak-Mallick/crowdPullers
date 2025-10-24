@@ -213,7 +213,7 @@ export default function ExhibitionsPage() {
                     <div className="mx-auto max-w-4xl px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">Ready to Host Your Exhibition?</h2>
                         <p className="text-xl mb-8 opacity-90">
-                            Let's create a world-class exhibition or conference that drives business growth and industry connections.
+                            Let&apos;s create a world-class exhibition or conference that drives business growth and industry connections.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button size="lg" variant="secondary" asChild>

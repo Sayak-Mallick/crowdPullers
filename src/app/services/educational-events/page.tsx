@@ -213,7 +213,7 @@ export default function EducationalEventsPage() {
                     <div className="mx-auto max-w-4xl px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">Ready to Celebrate Educational Excellence?</h2>
                         <p className="text-xl mb-8 opacity-90">
-                            Let's create an inspiring educational event that honors achievement and fosters academic excellence.
+                            Let&apos;s create an inspiring educational event that honors achievement and fosters academic excellence.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button size="lg" variant="secondary" asChild>

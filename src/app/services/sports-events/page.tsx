@@ -1,5 +1,5 @@
 import { HeroHeader } from "@/components/header";
-import { Trophy, CheckCircle, ArrowRight, Medal, Users, Calendar, Target } from 'lucide-react';
+import { Trophy, CheckCircle, ArrowRight, Medal, Calendar, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -149,7 +149,7 @@ export default function SportsEventsPage() {
                                 <div className="space-y-3">
                                     {benefits.map((benefit, index) => (
                                         <div key={index} className="flex items-center gap-3">
-                                            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                                            <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
                                             <span>{benefit}</span>
                                         </div>
                                     ))}
@@ -213,7 +213,7 @@ export default function SportsEventsPage() {
                     <div className="mx-auto max-w-4xl px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">Ready to Host Your Sports Event?</h2>
                         <p className="text-xl mb-8 opacity-90">
-                            Let's create a championship-level sports event that inspires athletes and thrills spectators.
+                            Let&apos;s create a championship-level sports event that inspires athletes and thrills spectators.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button size="lg" variant="secondary" asChild>

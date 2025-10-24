@@ -189,7 +189,7 @@ export default function CorporateEventsPage() {
                         <div className="text-center mb-16">
                             <h2 className="text-3xl font-bold mb-4">Recent Corporate Projects</h2>
                             <p className="text-lg text-muted-foreground">
-                                Discover how we've helped leading companies create memorable corporate experiences.
+                                Discover how we&apos;ve helped leading companies create memorable corporate experiences.
                             </p>
                         </div>
 
@@ -213,7 +213,7 @@ export default function CorporateEventsPage() {
                     <div className="mx-auto max-w-4xl px-6 text-center">
                         <h2 className="text-3xl font-bold mb-4">Ready to Plan Your Corporate Event?</h2>
                         <p className="text-xl mb-8 opacity-90">
-                            Let's discuss your vision and create an unforgettable corporate experience that drives results.
+                            Let&apos;s discuss your vision and create an unforgettable corporate experience that drives results.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button size="lg" variant="secondary" asChild>
