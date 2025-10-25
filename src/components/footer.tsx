@@ -46,33 +46,6 @@ export default function Footer() {
 
     return (
         <footer className="bg-background border-t">
-            {/* Newsletter Section */}
-            {/* <div className="bg-primary/5 border-b">
-                <div className="mx-auto max-w-7xl px-6 py-12">
-                    <div className="grid lg:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <h3 className="text-2xl font-bold mb-4">Stay Updated with CROWDpullers</h3>
-                            <p className="text-muted-foreground text-lg">
-                                Get the latest updates on our events, industry insights, and exclusive offers directly to your inbox.
-                            </p>
-                        </div>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <div className="flex-1">
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email address"
-                                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                />
-                            </div>
-                            <Button size="lg" className="whitespace-nowrap">
-                                Subscribe
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-
             {/* Main Footer Content */}
             <div className="mx-auto max-w-7xl px-6 py-16">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
