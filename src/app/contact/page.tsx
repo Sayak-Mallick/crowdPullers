@@ -17,11 +17,6 @@ export default function ContactPage() {
 
     const partners = [
         {
-            name: 'Miss Prantika Mazumder',
-            role: 'Partner',
-            phone: '983029938'
-        },
-        {
             name: 'Mr. Jayanta Saha',
             role: 'Partner',
             phone: '9875586039 / 9051342284'
@@ -35,6 +30,11 @@ export default function ContactPage() {
             name: 'Mr. Supratim Roy',
             role: 'Partner',
             phone: '98303 33821'
+        },
+        {
+            name: 'Miss Prantika Mazumder',
+            role: 'Partner',
+            phone: '983029938'
         }
     ];
 
