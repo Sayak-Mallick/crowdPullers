@@ -66,7 +66,7 @@ const celebImages: CelebImage[] = [
   },
   {
     id: 5,
-    src: "/celeb/download.jpg",
+    src: "/celeb/concert.png",
     alt: "Event Photography Highlights",
     title: "Event Photography",
     event: "Portfolio Highlights",
