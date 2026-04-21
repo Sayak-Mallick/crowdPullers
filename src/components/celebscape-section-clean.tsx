@@ -14,7 +14,7 @@ const celebImages: { id: number; src: string; alt: string; title: string; event:
   { id: 1, src: '/celeb/arijit.jpg', alt: 'Arijit Singh Live Concert', title: 'Arijit Singh Live Concert', event: 'Eco Park Cultural Festival', year: '2020' },
   { id: 2, src: '/celeb/shreya.jpg', alt: 'Shreya Ghoshal Performance', title: 'Shreya Ghoshal Performance', event: 'Corporate Gala Night', year: '2019' },
   { id: 3, src: '/celeb/shreya-2.jpg', alt: 'Shreya Ghoshal Performance 2', title: 'Shreya Ghoshal — Encore', event: 'Cultural Evening', year: '2018' },
-  { id: 4, src: '/celeb/sonu.webp', alt: 'Sonu Nigam Live', title: 'Sonu Nigam Live', event: 'Cultural Heritage Festival', year: '2018' },
+  { id: 4, src: '/celeb/sonunigam.png', alt: 'Sonu Nigam Live', title: 'Sonu Nigam Live', event: 'Cultural Heritage Festival', year: '2018' },
   { id: 5, src: '/celeb/download.jpg', alt: 'Event Photography Sample', title: 'Event Photography Highlights', event: 'Portfolio Highlights', year: '2021' },
   { id: 6, src: '/celeb/images.jpg', alt: 'Event Collage', title: 'Event Collage Showcase', event: 'Multiple Events', year: '2022' }
 ]
