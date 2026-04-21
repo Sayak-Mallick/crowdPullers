@@ -59,7 +59,7 @@ export default function CorporateEventsPage() {
             <HeroHeader />
             <main className="pt-20">
                 {/* Hero Section */}
-                <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-background">
+                <section className="py-16 md:py-24 bg-linear-to-b from-blue-50 to-background">
                     <div className="mx-auto max-w-7xl px-6">
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
                             <div>
@@ -149,7 +149,7 @@ export default function CorporateEventsPage() {
                                 <div className="space-y-3">
                                     {benefits.map((benefit, index) => (
                                         <div key={index} className="flex items-center gap-3">
-                                            <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                                            <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
                                             <span>{benefit}</span>
                                         </div>
                                     ))}
