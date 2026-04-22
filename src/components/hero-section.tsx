@@ -31,8 +31,8 @@ export default function HeroSection() {
         <>
             <HeroHeader />
             <main className="overflow-hidden [--color-primary-foreground:var(--color-white)] [--color-primary:var(--color-green-600)]">
-                <section>
-                    <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-32 lg:pt-48">
+                <section className="min-h-svh flex flex-col justify-center">
+                    <div className="relative mx-auto max-w-6xl px-6 py-20">
                         <div className="relative z-10 mx-auto max-w-4xl text-center">
                             <TextEffect
                                 preset="fade-in-blur"
@@ -66,15 +66,15 @@ export default function HeroSection() {
                                 className="mt-12">
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                     <Link href="/contact">
-                                        <Button 
+                                        <Button
                                             size="lg"
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 text-lg font-medium w-full sm:w-auto">
                                             Plan My Event
                                         </Button>
                                     </Link>
                                     <Link href="/portfolio">
-                                        <Button 
-                                            variant="outline" 
+                                        <Button
+                                            variant="outline"
                                             size="lg"
                                             className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-lg font-medium w-full sm:w-auto">
                                             View Our Portfolio
@@ -84,8 +84,8 @@ export default function HeroSection() {
                             </AnimatedGroup>
                         </div>
                     </div>
+                    <LogoCloud />
                 </section>
-                <LogoCloud />
             </main>
         </>
     )
