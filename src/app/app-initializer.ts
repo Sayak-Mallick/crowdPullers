@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useClientsStore } from "@/clients.store";
+import { useEventsStore } from "@/events.store";
 
 /**
  * Renders nothing. Placed in RootLayout so it mounts as early as possible,
@@ -9,10 +10,12 @@ import { useClientsStore } from "@/clients.store";
  */
 export default function AppInitializer() {
   const fetchClients = useClientsStore((s) => s.fetchClients);
+  const fetchEvents = useEventsStore((s) => s.fetchEvents);
 
   useEffect(() => {
     fetchClients();
-  }, [fetchClients]);
+    fetchEvents();
+  }, [fetchClients, fetchEvents]);
 
   return null;
 }

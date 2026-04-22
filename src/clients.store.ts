@@ -13,7 +13,6 @@ interface ClientsState {
   clients: IClient[];
   isLoading: boolean;
   isError: boolean;
-  /** Call this once — subsequent calls are no-ops if data is already loaded. */
   fetchClients: () => Promise<void>;
 }
 
