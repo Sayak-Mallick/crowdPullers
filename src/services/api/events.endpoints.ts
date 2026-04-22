@@ -12,3 +12,7 @@ api.interceptors.request.use((config) => {
 export const getEvents = async () => {
   return api.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events`);
 };
+
+export const getEventById = (id: string) => {
+  return api.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api//events/${id}`);
+};

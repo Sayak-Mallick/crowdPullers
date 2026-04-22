@@ -5,15 +5,7 @@ import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import Image from "next/image";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { useClientsStore } from "@/clients.store";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Client {
-  _id: string;
-  name: string;
-  clientLogo: string;
-}
+import { IClient, useClientsStore } from "@/clients.store";
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
@@ -57,7 +49,7 @@ function LogoCloudSkeleton() {
 
 // ─── Logo item ────────────────────────────────────────────────────────────────
 
-function LogoItem({ client }: { client: Client }) {
+function LogoItem({ client }: { client: IClient }) {
   return (
     <div
       className={cn(
