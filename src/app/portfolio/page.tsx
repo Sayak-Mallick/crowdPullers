@@ -9,6 +9,7 @@ import { HeroHeader } from '@/components/header'
 import { IEvents, useEventsStore } from '@/events.store'
 import { MapPin, Building2, CalendarDays, Tag } from 'lucide-react'
 import Link from 'next/link'
+import { EventsGridSkeleton } from '@/components/EventsGridSkeleton'
 
 const MONTH_NAMES = [
   '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -91,27 +92,33 @@ export default function PortfolioPage() {
       </section>
 
       {/* Events Grid Section */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        {events && events.length > 0 ? (
-          <>
-            {/* Count */}
-            <p className="text-sm text-muted-foreground mb-8">
-              Showing <span className="font-semibold text-foreground">{events.length}</span> event{events.length !== 1 ? 's' : ''}
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event) => (
-                <EventCard key={event._id} event={event} />
-              ))}
+      {isLoading ? (
+        <EventsGridSkeleton count={6} />
+      ) : isError ? (
+        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
+          <p className="text-muted-foreground">Something went wrong. Please try again later.</p>
+        </div>
+      ) : (
+        <section className="mx-auto max-w-7xl px-6 py-16">
+          {events && events.length > 0 ? (
+            <>
+              <p className="text-sm text-muted-foreground mb-8">
+                Showing <span className="font-semibold text-foreground">{events.length}</span> event{events.length !== 1 ? 's' : ''}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {events.map((event) => (
+                  <EventCard key={event._id} event={event} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
+              <CalendarDays className="w-12 h-12 text-muted-foreground/40" />
+              <p className="text-lg font-medium text-muted-foreground">No events found</p>
             </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
-            <CalendarDays className="w-12 h-12 text-muted-foreground/40" />
-            <p className="text-lg font-medium text-muted-foreground">No events found</p>
-          </div>
-        )}
-      </section>
+          )}
+        </section>
+      )}
     </div>
   )
 }
