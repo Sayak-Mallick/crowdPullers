@@ -10,5 +10,5 @@ api.interceptors.request.use((config) => {
 });
 
 export const getClients = async () => {
-  return api.get("/api/clients");
+  return api.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/clients`);
 };
