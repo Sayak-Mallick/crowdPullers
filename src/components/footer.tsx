@@ -102,12 +102,12 @@ export default function Footer() {
                                 >
                                     Contact Partners
                                 </Tabs.Trigger>
-                                <Tabs.Trigger 
+                                {/* <Tabs.Trigger 
                                     value="connect" 
                                     className="flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground text-muted-foreground hover:text-foreground"
                                 >
                                     Connect With Us
-                                </Tabs.Trigger>
+                                </Tabs.Trigger> */}
                             </Tabs.List>
 
                             {/* Offices Tab */}
@@ -210,7 +210,7 @@ export default function Footer() {
                         © {currentYear} CROWDpullers. All rights reserved.
                     </div>
 
-                    <div className="flex flex-wrap gap-6 text-sm">
+                    {/* <div className="flex flex-wrap gap-6 text-sm">
                         <Link href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">
                             Privacy Policy
                         </Link>
@@ -223,7 +223,7 @@ export default function Footer() {
                         <Link href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">
                             Sitemap
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </footer>
