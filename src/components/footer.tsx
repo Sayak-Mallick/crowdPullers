@@ -38,10 +38,10 @@ export default function Footer() {
     ]
 
     const partners = [
-        { name: 'Miss Prantika Mazumder', role: 'Partner', phones: ['983029938'] },
         { name: 'Mr. Jayanta Saha', role: 'Partner', phones: ['9875586039', '9051342284'] },
+        { name: 'Miss Prantika Mazumder', role: 'Partner', phones: ['983029938'] },
         { name: 'Mr. Swarup Chakraborty', role: 'Partner', phones: ['98303 36402'] },
-        { name: 'Mr. Supratim Roy', role: 'Partner', phones: ['98303 33821'] }
+        // { name: 'Mr. Supratim Roy', role: 'Partner', phones: ['98303 33821'] }
     ]
 
     return (

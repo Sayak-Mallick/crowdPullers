@@ -26,11 +26,11 @@ export default function ContactPage() {
             role: 'Partner',
             phone: '98303 36402'
         },
-        {
-            name: 'Mr. Supratim Roy',
-            role: 'Partner',
-            phone: '98303 33821'
-        },
+        // {
+        //     name: 'Mr. Supratim Roy',
+        //     role: 'Partner',
+        //     phone: '98303 33821'
+        // },
         {
             name: 'Miss Prantika Mazumder',
             role: 'Partner',
